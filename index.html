@@ -20,6 +20,13 @@
     <input type='text' id='messageInput' placeholder='Message'>
 	<script type="text/javascript">
 	var myDataRef = new Firebase('https://ev60gos42by.firebaseio-demo.com/');
+	
+	
+   //to store data in firebase
+   <!-- ========================================
+   =============================================
+   ==================
+   -->
 	$("#messageInput").keypress(function (e) {
 		// body...
 		 //13 for enter
@@ -35,12 +42,21 @@
 		 	$("#messageInput").val('');
 		 	}
 	});
+
+
+
 		 	//many clients can add to the same list without conflict.
 		 	//Now let's receive chat messages.
 		 	//We need to tell Firebase to notify us when chat messages arrive. 
 		 	//We do this by adding a callback to the list of chat messages using the on() method
 		 	//We'll use the 'child_added' event so that we are notified of the
 		 	// arrival of individual messages.
+		 //
+		 //to retrieve data from firebase
+		 <!-- ========================================
+   =============================================
+   ==================
+   -->
 	myDataRef.on('child_added', function(snapshot) {
   		    //We'll fill this in later.
   		    //With Firebase, you always read data using callbacks. 
