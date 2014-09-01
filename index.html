@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Firebase</title>
+	<!-- install firebase
+	You now have access to a massively scalable real-time backend
+	 -->
+	<script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+	<!-- You'll need a reference to access data inside your Firebase
+	Firebase references are created using a URL that specifies which data you want to access
+    add in the body
+	 -->
+
+</head>
+<body>
+	<div id='messagesDiv'></div>
+	<input type='text' id='nameInput' placeholder='Name'>
+    <input type='text' id='messageInput' placeholder='Message'>
+	<script type="text/javascript">
+	var myDataRef = new Firebase('https://ev60gos42by.firebaseio-demo.com/');
+	$("#messageInput").keypress(function (e) {
+		// body...
+		 //13 for enter
+		 if(e.keyCode==13){
+		 	var name=$("#nameInput").val();
+		 	var text=$("#messageInput").val();
+		 	// write a message to Firebase using the set() function
+		 	// myDataRef.set('User'+name+'says'+text);
+		 	// to write an object with text and name properties
+		 	//myDataRef.set({name:name ,text:text});
+		 	//firebase support list of data
+		 	myDataRef.push({name: name, text: text});
+		 	$("#messageInput").val('');
+		 	}
+	});
+		 	//many clients can add to the same list without conflict.
+		 	//Now let's receive chat messages.
+		 	//We need to tell Firebase to notify us when chat messages arrive. 
+		 	//We do this by adding a callback to the list of chat messages using the on() method
+		 	//We'll use the 'child_added' event so that we are notified of the
+		 	// arrival of individual messages.
+	myDataRef.on('child_added', function(snapshot) {
+  		    //We'll fill this in later.
+  		    //With Firebase, you always read data using callbacks. 
+  		    //This allows us to guarantee that Firebase applications always update in real-time.
+  		    /* Extract the message data from the snapshot by calling the val() function and assign it to a variable. Then, call the displayChatMessage() function to display the message as shown:*/
+  	var message = snapshot.val();
+    displayChatMessage(message.name, message.text);
+	});
+
+	function displayChatMessage(name, text) {
+    $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+    $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+    };		 
+	//A core concept of Firebase is that every piece of data has its own URL
+	/* can use this URL to access your data in several ways
+	. from any firebase client library
+	.  from rest api of friebase (ad .json in url )
+	*/
+	</script>
+	
+</body>
+</html>
